@@ -8,7 +8,7 @@ Release:	1
 License:	GPL
 Group:		Applications/System
 Source0:	%{name}.tar.gz
-# Source0-md5:	9c119853aac17437bf0b05cbb8a37117
+# Source0-md5:	2e787a04f4b730b705bbd9d25dbdee72
 URL:		http://sources.redhat.com/cluster/
 BuildRequires:	iddev
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
