@@ -1,6 +1,5 @@
-#
-# Conditional build:
-Summary:	shared-disk cluster file system
+Summary:	Shared-disk cluster file system
+Summary(pl):	Klastrowy system plików na wspó³dzielonym dysku
 Name:		gfs
 %define	snap	20040625
 Version:	0.0.0.%{snap}.1
@@ -24,6 +23,17 @@ to allow the computers coordinate their I/O so filesystem consistency
 is maintained. One of the nifty features of GFS is perfect consistency
 -- changes made to the filesystem on one machine show up immediately
 on all other machines in the cluster.
+
+%description -l pl
+GFS (Global File System) to klastrowy system plików. Pozwala klastrowi
+komputerów na jednoczesne korzystanie z urz±dzenia blokowego
+dzielonego miêdzy nimi (poprzez FC, iSCSI, NBD itp.). GFS odczytuje i
+zapisuje urz±dzenie blokowe jak lokalny system plików, ale u¿ywa
+dodatkowo modu³u blokuj±cego, aby umo¿liwiæ komputerom koordynowanie
+ich operacji I/O w celu zachowania spójno¶ci systemu plików. Jedn± z
+szykownych mo¿liwo¶ci GFS-a jest idealna spójno¶æ - zmiany wykonane w
+systemie plików na jednej maszynie natychmiast pokazuj± siê na
+wszystkich innych maszynach w klastrze.
 
 %prep
 %setup -q -n %{name}
