@@ -8,7 +8,7 @@ License:	GPL
 Group:		Applications/System
 Source0:	%{name}.tar.gz
 # Source0-md5:	2e787a04f4b730b705bbd9d25dbdee72
-URL:		http://sources.redhat.com/cluster/
+URL:		http://sources.redhat.com/cluster/gfs/
 BuildRequires:	iddev
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
