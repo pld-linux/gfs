@@ -18,6 +18,7 @@ Source3:	lm_interface.h
 # NoSource3-md5: 5b000a3b33af218e1b6b8a7d96b7e356 (rev. 1.7)
 URL:		http://sources.redhat.com/cluster/gfs/
 BuildRequires:	iddev
+BuildRequires:	perl-base
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_sbindir	/sbin
