@@ -10,6 +10,7 @@ Source0:	ftp://sources.redhat.com/pub/cluster/releases/cluster-%{version}.tar.gz
 # Source0-md5:	131c34c8b66d8d7d74384839ed4091d0
 URL:		http://sources.redhat.com/cluster/gfs/
 BuildRequires:	iddev
+BuildRequires:	ncurses-devel
 BuildRequires:	perl-base
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -43,7 +44,7 @@ install %{name}-kernel/src/gfs/{gfs_ioctl.h,gfs_ondisk.h} %{name}/include/linux
 install %{name}-kernel/src/harness/lm_interface.h %{name}/include/linux
 cd %{name}
 
-%{__perl} -pi -e 's/-Wall/%{rpmcflags} -Wall/' make/defines.mk.input
+%{__perl} -pi -e 's,-Wall,%{rpmcflags} -I/usr/include/ncurses -Wall,' make/defines.mk.input
 %{__perl} -pi -e 's/-O2 //' gfs_{mkfs,quota,tool}/Makefile
 
 %build
