@@ -1,13 +1,13 @@
 Summary:	Shared-disk cluster file system
 Summary(pl):	Klastrowy system plików na wspó³dzielonym dysku
 Name:		gfs
-Version:	1.02.00
+Version:	1.03.00
 Release:	1
 Epoch:		1
 License:	GPL v2
 Group:		Applications/System
 Source0:	ftp://sources.redhat.com/pub/cluster/releases/cluster-%{version}.tar.gz
-# Source0-md5:	131c34c8b66d8d7d74384839ed4091d0
+# Source0-md5:	8eea23df70d2007c4fb8c234cfea49cf
 URL:		http://sources.redhat.com/cluster/gfs/
 BuildRequires:	iddev
 BuildRequires:	ncurses-devel
