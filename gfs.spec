@@ -1,5 +1,5 @@
 Summary:	Shared-disk cluster file system
-Summary(pl):	Klastrowy system plików na wspó³dzielonym dysku
+Summary(pl.UTF-8):   Klastrowy system plikÃ³w na wspÃ³Å‚dzielonym dysku
 Name:		gfs
 Version:	1.03.00
 Release:	1
@@ -26,15 +26,15 @@ is maintained. One of the nifty features of GFS is perfect consistency
 -- changes made to the filesystem on one machine show up immediately
 on all other machines in the cluster.
 
-%description -l pl
-GFS (Global File System) to klastrowy system plików. Pozwala klastrowi
-komputerów na jednoczesne korzystanie z urz±dzenia blokowego
-dzielonego miêdzy nimi (poprzez FC, iSCSI, NBD itp.). GFS odczytuje i
-zapisuje urz±dzenie blokowe jak lokalny system plików, ale u¿ywa
-dodatkowo modu³u blokuj±cego, aby umo¿liwiæ komputerom koordynowanie
-ich operacji I/O w celu zachowania spójno¶ci systemu plików. Jedn± z
-szykownych mo¿liwo¶ci GFS-a jest idealna spójno¶æ - zmiany wykonane w
-systemie plików na jednej maszynie natychmiast pokazuj± siê na
+%description -l pl.UTF-8
+GFS (Global File System) to klastrowy system plikÃ³w. Pozwala klastrowi
+komputerÃ³w na jednoczesne korzystanie z urzÄ…dzenia blokowego
+dzielonego miÄ™dzy nimi (poprzez FC, iSCSI, NBD itp.). GFS odczytuje i
+zapisuje urzÄ…dzenie blokowe jak lokalny system plikÃ³w, ale uÅ¼ywa
+dodatkowo moduÅ‚u blokujÄ…cego, aby umoÅ¼liwiÄ‡ komputerom koordynowanie
+ich operacji I/O w celu zachowania spÃ³jnoÅ›ci systemu plikÃ³w. JednÄ… z
+szykownych moÅ¼liwoÅ›ci GFS-a jest idealna spÃ³jnoÅ›Ä‡ - zmiany wykonane w
+systemie plikÃ³w na jednej maszynie natychmiast pokazujÄ… siÄ™ na
 wszystkich innych maszynach w klastrze.
 
 %prep
