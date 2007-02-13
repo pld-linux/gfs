@@ -1,5 +1,5 @@
 Summary:	Shared-disk cluster file system
-Summary(pl.UTF-8):   Klastrowy system plików na współdzielonym dysku
+Summary(pl.UTF-8):	Klastrowy system plików na współdzielonym dysku
 Name:		gfs
 Version:	1.03.00
 Release:	1
