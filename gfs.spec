@@ -1,15 +1,15 @@
 Summary:	Shared-disk cluster file system
 Summary(pl.UTF-8):	Klastrowy system plików na współdzielonym dysku
 Name:		gfs
-Version:	1.03.00
+Version:	2.00.00
 Release:	1
 Epoch:		1
 License:	GPL v2
 Group:		Applications/System
 Source0:	ftp://sources.redhat.com/pub/cluster/releases/cluster-%{version}.tar.gz
-# Source0-md5:	8eea23df70d2007c4fb8c234cfea49cf
+# Source0-md5:	2ef3f4ba9d3c87b50adfc9b406171085
 URL:		http://sources.redhat.com/cluster/gfs/
-BuildRequires:	iddev
+BuildRequires:	libvolume_id-devel
 BuildRequires:	ncurses-devel
 BuildRequires:	perl-base
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -39,9 +39,7 @@ wszystkich innych maszynach w klastrze.
 
 %prep
 %setup -q -n cluster-%{version}
-install -d %{name}/include/linux
-install %{name}-kernel/src/gfs/{gfs_ioctl.h,gfs_ondisk.h} %{name}/include/linux
-install %{name}-kernel/src/harness/lm_interface.h %{name}/include/linux
+install %{name}-kernel/src/gfs/{gfs_ioctl.h,gfs_ondisk.h} %{name}/include
 cd %{name}
 
 %{__perl} -pi -e 's,-Wall,%{rpmcflags} -I/usr/include/ncurses -Wall,' make/defines.mk.input
@@ -50,13 +48,11 @@ cd %{name}
 %build
 cd %{name}
 ./configure \
-	--incdir=%{_includedir} \
 	--libdir=%{_libdir} \
 	--mandir=%{_mandir} \
 	--prefix=%{_prefix} \
 	--sbindir=%{_sbindir}
-%{__make} \
-	CC="%{__cc}"
+%{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
