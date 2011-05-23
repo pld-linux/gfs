@@ -1,17 +1,19 @@
 Summary:	Shared-disk cluster file system
 Summary(pl.UTF-8):	Klastrowy system plików na współdzielonym dysku
 Name:		gfs
-Version:	2.00.00
+Version:	2.03.10
 Release:	1
 Epoch:		1
-License:	GPL v2
+License:	GPL v2+
 Group:		Applications/System
 Source0:	ftp://sources.redhat.com/pub/cluster/releases/cluster-%{version}.tar.gz
-# Source0-md5:	2ef3f4ba9d3c87b50adfc9b406171085
+# Source0-md5:	379b560096e315d4b52e238a5c72ba4a
+Patch0:		%{name}-blkid.patch
 URL:		http://sources.redhat.com/cluster/gfs/
-BuildRequires:	libvolume_id-devel
+BuildRequires:	libblkid-devel >= 2.16
 BuildRequires:	ncurses-devel
 BuildRequires:	perl-base
+Requires:	libblkid >= 2.16
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_sbindir	/sbin
@@ -39,26 +41,29 @@ wszystkich innych maszynach w klastrze.
 
 %prep
 %setup -q -n cluster-%{version}
-install %{name}-kernel/src/gfs/{gfs_ioctl.h,gfs_ondisk.h} %{name}/include
-cd %{name}
-
-%{__perl} -pi -e 's,-Wall,%{rpmcflags} -I/usr/include/ncurses -Wall,' make/defines.mk.input
-%{__perl} -pi -e 's/-O2 //' gfs_{mkfs,quota,tool}/Makefile
+%patch0 -p1
 
 %build
-cd %{name}
 ./configure \
+	--cc="%{__cc}" \
+	--cflags="%{rpmcflags} -Wall" \
+	--ldflags="%{rpmldflags}" \
+	--incdir=%{_includedir} \
+	--ncursesincdir=%{_includedir}/ncurses \
 	--libdir=%{_libdir} \
+	--libexecdir=%{_libdir} \
 	--mandir=%{_mandir} \
 	--prefix=%{_prefix} \
-	--sbindir=%{_sbindir}
-%{__make}
+	--sbindir=%{_sbindir} \
+	--without_gfs2 \
+	--without_gnbd \
+	--without_kernel_modules
+%{__make} -C %{name}
 
 %install
 rm -rf $RPM_BUILD_ROOT
-cd %{name}
 
-%{__make} install \
+%{__make} -C %{name} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
 %clean
@@ -66,6 +71,12 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_sbindir}/*
+%attr(755,root,root) %{_sbindir}/fsck.gfs
+%attr(755,root,root) %{_sbindir}/gfs_*
+%attr(755,root,root) %{_sbindir}/mkfs.gfs
+%attr(755,root,root) %{_sbindir}/mount.gfs
+%attr(755,root,root) %{_sbindir}/umount.gfs
+# TODO: PLDify
 #%attr(754,root,root) /etc/rc.d/init.d/gfs
-%{_mandir}/man?/*
+%{_mandir}/man8/gfs.8*
+%{_mandir}/man8/gfs_*.8*

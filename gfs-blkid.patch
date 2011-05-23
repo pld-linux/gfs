@@ -1,0 +1,70 @@
+--- cluster-2.03.10/gfs/gfs_mkfs/main.c.orig	2008-12-09 09:36:04.000000000 +0100
++++ cluster-2.03.10/gfs/gfs_mkfs/main.c	2011-05-23 16:54:19.847098734 +0200
+@@ -10,11 +10,11 @@
+ #include <assert.h>
+ #include <time.h>
+ #include <mntent.h>
++#include <blkid/blkid.h>
+ 
+ #include "global.h"
+ #include "gfs_ondisk.h"
+ #include "osi_list.h"
+-#include "libvolume_id.h"
+ #include "libgfs.h"
+ #include "copyright.cf"
+ 
+@@ -207,34 +207,36 @@ static void decode_arguments(int argc, c
+ void are_you_sure(commandline_t *comline)
+ {
+ 	char input[32];
+-	struct volume_id *vid = NULL;
++	blkid_probe pr;
+ 	int fd;
+ 
+ 	fd = open(comline->device, O_RDONLY);
+ 	if (fd < 0)
+ 		die("Error: device %s not found.\n", comline->device);
+-	vid = volume_id_open_fd(fd);
+-	if (vid == NULL) {
++	pr = blkid_new_probe();
++	if (pr == NULL) {
+ 		close(fd);
+ 		die("error identifying the contents of %s: %s\n",
+ 		    comline->device, strerror(errno));
+ 	}
+ 	printf("This will destroy any data on %s.\n",
+ 	       comline->device);
+-	if (volume_id_probe_all(vid, 0, MKFS_DEFAULT_BSIZE) == 0) {
++	blkid_probe_set_request(pr, BLKID_PROBREQ_TYPE | BLKID_PROBREQ_USAGE);
++	if ((blkid_probe_set_device(pr, fd, 0, MKFS_DEFAULT_BSIZE) == 0) &&
++	    (blkid_do_safeprobe(pr) == 0)) {
+ 		const char *fstype, *fsusage;
+ 		int rc;
+ 
+-		rc = volume_id_get_type(vid, &fstype);
++		rc = blkid_probe_lookup_value(pr, "TYPE", &fstype, NULL);
+ 		if (rc) {
+-			rc = volume_id_get_usage(vid, &fsusage);
++			rc = blkid_probe_lookup_value(pr, "USAGE", &fsusage, NULL);
+ 			if (!rc || strncmp(fsusage, "other", 5) == 0)
+ 				fsusage = "partition";
+ 			printf("  It appears to contain a %s %s.\n", fstype,
+ 			       fsusage);
+ 		}
+ 	}
+-	volume_id_close(vid);
++	blkid_free_probe(pr);
+ 	close(fd);
+ 	printf("\nAre you sure you want to proceed? [y/n] ");
+ 	if (fgets(input, 32, stdin) == NULL || input[0] != 'y')
+--- cluster-2.03.10/gfs/gfs_mkfs/Makefile.orig	2008-12-09 09:36:04.000000000 +0100
++++ cluster-2.03.10/gfs/gfs_mkfs/Makefile	2011-05-23 16:54:37.883766007 +0200
+@@ -24,7 +24,7 @@ CFLAGS += -I${gfskincdir} -I${volidincdi
+ CFLAGS += -I$(S)/../include -I$(S)/../libgfs
+ CFLAGS += -I${incdir}
+ 
+-LDFLAGS += -L${volidlibdir} -lvolume_id
++LDFLAGS += -L${volidlibdir} -lblkid
+ LDFLAGS += -L../libgfs -lgfs
+ 
+ 
