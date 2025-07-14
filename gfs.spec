@@ -45,8 +45,8 @@ wszystkich innych maszynach w klastrze.
 
 %prep
 %setup -q -n cluster-%{version}
-%patch0 -p1
-%patch1 -p1
+%patch -P0 -p1
+%patch -P1 -p1
 
 %build
 ./configure \
